@@ -1,0 +1,3 @@
+[submodule "src/zet"]
+	path = src/zet
+	url = git://github.com/marmolejo/zet.git
