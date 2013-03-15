@@ -31,27 +31,15 @@
 \usepackage{microtype} % Slightly tweak font spacing for aesthetics
 
 \usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
-\usepackage{multicol} % Used for the two-column layout of the document
 \usepackage{hyperref} % For hyperlinks in the PDF
 
-\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
-\usepackage{booktabs} % Horizontal rules in tables
-\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
-
-\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
 \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
-
-\usepackage{abstract} % Allows abstract customization
-\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
-\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
-
-\usepackage{titlesec} % Allows customization of titles
 
 \usepackage{graphicx}
 \renewcommand\thesection{\Roman{section}}
-\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
 
 \usepackage{fancyhdr} % Headers and footers
+\usepackage{indentfirst }
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
@@ -64,74 +52,142 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{}} % Article title
-%
-%\author{
-%\large
-%\textsc{Elie Rosen}\\[2mm] % Your name
-%\normalsize Rutgers University \\ % Your institution
-%\normalsize \href{mailto:erosen@rutge}{erosen@rutgers.edu} % Your email address
-%\vspace{-5mm}
-%}
-\date{}
 
 %----------------------------------------------------------------------------------------
 
 \begin{document}
 \input{cover_page}
 
-\maketitle % Insert title
-
 \thispagestyle{fancy} % All pages have headers and footers
-
-%----------------------------------------------------------------------------------------
-%	ABSTRACT
-%----------------------------------------------------------------------------------------
-%
-%\begin{abstract}
-%
-%\noindent{} % Dummy abstract text
-%
-%\end{abstract}
 
 %----------------------------------------------------------------------------------------
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-\begin{multicols}{2} % Two-column layout throughout the main article text
+ % Two-column layout throughout the main article text
 
 \section{Summary}
 
-{}
+The 8086 is a 16-bit microprocessor that was released in 1978, the x86 architecture used on the CPU is still used to this day albeit in a 32bit version. The 8086 came as a 40 pin Dual In-line Package that could be used in various products such as the original IBM PC. Since the design is over 30 years old, all relevant patents have since expired and the designs have become open for free use and modification. 
+
+For this Independent Study, an 8086 processor will be implemented on an Altera DE0 Field Programmable Gate Array (FPGA) development board. An FPGA is a tool that is used for quickly prototyping and developing new hardware designs without the need for expensive fabrication plants and custom made chips. Instead, the FPGA chip (in this case a Cyclone III 3C16 FPGA) simulates hardware which can then interface with the intended product or design.
+
+The final goal for this study is to create an 8086 processor on the Altera DE0 development board and then run MS-DOS, Microsoft's original command line operating system, in order to obtain a fully functioning computer with keyboard input and VGA output.
+
 
 
 %------------------------------------------------
 
 \section{Completed Work}
 
-{}
+In order to begin working on the project necessary research was completed as to the various requirements for completing this project. It was determined that an FPGA capable of at least 256 bytes of internal ROM and more than 9,000 logical elements or LE' s. As an added convenience, it was important to select a board that would be able to handle my project inputs and outputs such as PS2 keyboard and VGA output in order to spend more time on the study and not building miscellaneous hardware.  From this research, it was determined that the Altera DE0 development board sufficiently the project needs with over 15,000 LE's, a VGA port, a PS2 port, buttons, LEDs, switches, and USB interface. Another important addition to the board is it's SD card slot which would be used to store the MS-DOS files.
+
+This study has been sponsored by the Altera University Program in which they have provided an Altera DE0 development board as well as an Altera DE0-Nano development boards at no cost. This makes the projects overall required budget \$0 since the sponsorship includes the relevant packages for creating hardware on the chip.
+
 
 %------------------------------------------------
 
 \section{Ongoing Progress}
 
-{}
+The next stages for the project is to begin work with the open source project "Zet Processor" which includes a modified version of the 8086 processor design by the OpenCores community. Once the processor is loaded, work with begin to install MS-DOS. This will be achieved by custom mapping a bios into memory and then instructing it to load the operating system. Finally once the operating system is installed, PS2 keyboard input and VGA output will be enabled to show the fully working operating system. If time permits additional software such as vintage games will be loaded to showcase the processors capabilities.
 
 %------------------------------------------------
+\newpage
+\section{Appendix}
+Full specifications for Altera DE0 development board: 
+\begin{itemize}
+\item FPGA
+	\begin{itemize}
+ 	\item Cyclone III 3C16 FPGA
+	\item 15,408 LEs
+	\item 56 M9K Embedded Memory Blocks
+	\item 504K total RAM bits
+	\item 56 embedded multipliers
+	\item 4 PLLs
+	\item 346 user I/O pins
+	\item FineLine BGA 484-pin package
+	\end{itemize}
+\item Memory
+	\begin{itemize}
+	\item SDRAM
+		\begin{itemize}
+		\item One 8-Mbyte Single Data Rate Synchronous Dynamic RAM memory chip
+		\end{itemize}
+	\item Flash memory
+		\begin{itemize}
+		\item 4-Mbyte NOR Flash memory
+		\item Support Byte (8-bits)/Word (16-bits) mode
+		\end{itemize}
+	\item SD card socket
+		\begin{itemize}
+		\item Provides both SPI and SD 1-bit mode SD Card access
+		\end{itemize}
+	\end{itemize}
+\item Interface
+	\begin{itemize}
+	\item Built-in USB Blaster circuit
+		\begin{itemize}
+	 	\item On-board USB Blaster for programming
+		\item Using the Altera EPM240 CPLD
+		\end{itemize}
+	\item Altera Serial Configuration device
+		\begin{itemize}
+		\item Altera EPCS4 serial EEPROM chip
+		\end{itemize}
+	\item Pushbutton switches
+		\begin{itemize}
+		\item 3 pushbutton switches
+		\end{itemize}
+	\item Slide switches
+		\begin{itemize}
+		\item 10 Slide switches
+		\end{itemize}
+	\item General User Interfaces
+		\begin{itemize}
+		\item 10 Green color LEDs
+		\item 4 seven-segment displays
+		\end{itemize}
+	\item Clock inputs
+		\begin{itemize}
+		\item 50-MHz oscillator
+		\end{itemize}
+	\item VGA output
+		\begin{itemize}
+		\item Uses a 4-bit resistor-network DAC
+		\item With 15-pin high-density D-sub connector
+		\item Supports up to 1280x1024 at 60-Hz refresh rate
+		\end{itemize}
+	\item Serial ports
+		\begin{itemize}
+		\item One RS-232 port (Without DB-9 serial connector)
+		\item One PS/2 port
+		\end{itemize}
+	\item Two 40-pin expansion headers
+		\begin{itemize}
+		\item 72 Cyclone III I/O pins, as well as 8 power and ground lines, are brought out to two 40-pin expansion connectors
+		\item40-pin header is designed to accept a standard 40-pin ribbon cable used for IDE hard drives 
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
 
-\section{Acknowledgements}
-{}
+Available x86 Instructions: \url{ http://zet.aluzina.org/index.php/Zet_status}
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
 
 \begin{thebibliography}{99}
-% Bibtex to be included
+
+Altera University Program: \url{http://www.altera.com/education/univ/unv-index.html} \\
+Altera DE0 development board: \url{http://www.altera.com/education/univ/materials/boards/de0/unv-de0-board.html} \\
+Open Cores Project: \url{http://opencores.org/} \\
+Zet Processor project: \url{http://zet.aluzina.org/index.php/Zet_processor} \\
+Zet Processor source code: \url{https://github.com/marmolejo/zet} \\
+Zero-Board-Computer: \url{https://github.com/donnaware/ZBC---The-Zero-Board-Computer} 
+
 \end{thebibliography}
 
 %----------------------------------------------------------------------------------------
 
-\end{multicols}
 
 \end{document}
