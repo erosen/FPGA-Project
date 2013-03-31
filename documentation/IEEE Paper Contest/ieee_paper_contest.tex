@@ -1,12 +1,4 @@
-
-% Note that the a4paper option is mainly intended so that authors in
-% countries using A4 can easily print to A4 and see how their papers will
-% look in print - the typesetting of the document will not typically be
-% affected with changes in paper size (but the bottom and side margins will).
-% Use the testflow package mentioned above to verify correct handling of
-% both paper sizes by the user's LaTeX system.
-
-\documentclass[conference]{IEEEtran}
+\documentclass[11pt,peerreviewca]{IEEEtran}
 
 % *** CITATION PACKAGES ***
 \usepackage{cite}
@@ -22,19 +14,34 @@
 
 
 \begin{document}
-% paper title
-% can use linebreaks \\ within to get better formatting as desired
 \title{FPGA Design - the Making of an Intel 8086 Microprocessor with Modern Technology}
 
+\ifCLASSOPTIONconference
+\author{\IEEEauthorblockN{Elie Rosen}
+\IEEEauthorblockA{Department of Electrical \& Computer Engineering\\
+Rutgers, the State University of New Jersey\\
+Piscataway, New Jersey 08854\\
+Contact: erosen@rutgers.edu}}
+\fi
 % make the title area
 \maketitle
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+\ifCLASSOPTIONpeerreview
+\begin{center} \bfseries Independent Study / Special Problems \end{center}
+\fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
 
 \begin{abstract}
 The Intel 8086 microprocessor was first introduced in 1978. Since then the semiconductor industry has changed vastly from the old chip manufacturing techniques of the time. Today we can fit thousands of Intel 8086 microprocessors in the same size package with use of modern semiconductor techniques such as the ability to design with 22nm feature size and better yield from improved wafer quality. This paper examines how we can still learn from ancient technology but with a new more modern twist. By utilizing field programmable gate arrays, we can easily implement the same technology from the past and learn about architectures that are still in use today.
 \end{abstract}
 
 \section{Introduction}
-It was in the mid 1970s when Intel announced their latest project, the Intel 8086 -  a 16-bit microprocessor capable of supporting up to a revolutionary 1 mega{\em byte} of address space and 64 kilo{\em bytes} of I/O. Gone were the days of simple computing in only 8-bits of freedom, this was the 70's and 16-bits was here to take over. Along with the increases in accessible memory and larger size ALU computations, Intel introduced a new type of architecture and instruction set known as x86, this new method of computing revolved around the use of registers that stored input/output data which could then have computations performed on them. This improvement has since paved the way for future computing by setting a standard on how to receive data and how data would be processed in a regular clock cycle. The 8086 supported 80 assembly instructions which gave software developers of the time more way to write better code that performed better with the new hardware.
+\IEEEPARstart{I}{t} was in the mid 1970s when Intel announced their latest project, the Intel 8086 -  a 16-bit microprocessor capable of supporting up to a revolutionary 1 mega{\em byte} of address space and 64 kilo{\em bytes} of I/O. Gone were the days of simple computing in only 8-bits of freedom, this was the 70's and 16-bits was here to take over. Along with the increases in accessible memory and larger size ALU computations, Intel introduced a new type of architecture and instruction set known as x86, this new method of computing revolved around the use of registers that stored input/output data which could then have computations performed on them. This improvement has since paved the way for future computing by setting a standard on how to receive data and how data would be processed in a regular clock cycle. The 8086 supported 80 assembly instructions which gave software developers of the time more way to write better code that performed better with the new hardware.
 
 The field-programmable gate array (FPGA) has been around since the 1980's, its purpose was to be able to easily create custom hardware without the need to buy large quantities of logic chips and instead use one chip that could be customized after manufacturing to act as the hardware needed at the time, essentially the perfect prototyping device. The FPGA accomplishes this by using "logic blocks" which is typically a circuit consisting of multiplexers and low level logic gates that can be configured in such a way as to create custom complex logic such as adders or even be used for more simple XOR and NAND gates a basic structure of a logic block can be found in Figure \ref{fig:LogicElement}. The blocks are most often configured as a matrix with interconnects for inputs, outputs and configuration paths in between, latest improvements in silicon technologies have allowed companies to greatly increase the number of logic blocks on a chip into the hundreds of thousands and beyond.
 
@@ -46,7 +53,7 @@ The field-programmable gate array (FPGA) has been around since the 1980's, its p
 \end{figure}
 
 \section{Implementation Requirements}
-Through extensive research of various FPGA manufacturers and the different styles of development boards offered from a few different companies, it was determined that an FPGA able to hold more than 9,000 logical elements or LEs would be required to successfully implement the Intel 8086 microprocessor. As an added necessity, it was important to select a development board that would be able to handle the project inputs and outputs such as PS2 keyboard and VGA output in order to spend more time on the study and not building miscellaneous external hardware.  From this research, it was determined that the Altera DE0 development board sufficiently met the project needs with over 15,000 LE's, a VGA port, a PS2 port, buttons, LEDs, switches, and USB interface. Another important addition to the board is it's SecureDigital (SD) memory card slot which would allow for external flash  memory storage of an operating system.
+Through extensive research of various FPGA manufacturers and the different styles of development boards offered from a few different companies, it was determined that an FPGA able to hold more than 9,000 logical elements or LEs would be required to successfully implement the Intel 8086 microprocessor. As an added necessity, it was important to select a development board that would be able to handle the project inputs and outputs such as PS2 keyboard and VGA output in order to spend more time on the study and not building miscellaneous external hardware.  From this research, it was determined that the Altera DE0 development board sufficiently met the project needs with over 15,000 LE's, a VGA port, a PS2 port, buttons, LEDs, switches, and USB interface. Another important addition to the board is it's SecureDigital (SD) memory card slot which would allow for external flash  memory storage of an operating system, full specifications for the Altera DE0 board can be found in Appendix \ref{App:AppendixA}.
 
 Other components for the project include; an LCD monitor to visualize the system status, a PS2 keyboard to interact with the operating system, a computer with Linux to compile the processor and write the operating system to the memory card.
 
@@ -86,9 +93,9 @@ The topic of this study on FPGA design and x86 archeticure was of great imp
 \section*{Acknowledgment}
 The author would like to thank the Altera University Program \cite{UniProgram} for providing development boards and necessary software for work on this research.
 
-\appendix
+\appendices
 \label{App:AppendixA}
-\subsection{Full specifications for Altera DE0 development board:}
+\section{Full specifications for Altera DE0 development board:}
 \begin{itemize}
 \item FPGA
 	\begin{itemize}
@@ -165,7 +172,7 @@ The author would like to thank the Altera University Program \cite{UniProgram} f
 \end{itemize}
 
 \label{App:AppendixB}
-\subsection{Available x86 Instructions on the Zet Processor \cite{ZetStatus}:}
+\section{Available x86 Instructions on the Zet Processor \cite{ZetStatus}:}
 
 {\noindent\bf Data transfer instructions} \\
 mov, push/pop, in/out, lahf/sahf, lds/lea/les, pushf/popf, xchg, xlat
