@@ -3,7 +3,7 @@
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{import}
-\usepackage[hmargin=.97in,vmargin=.97in]{geometry}
+\usepackage[hmargin=1in,vmargin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{multicol}
@@ -24,7 +24,7 @@
 }
 \makeatother
 
-\onehalfspacing
+\doublespacing
 
 \begin{document}
 
@@ -37,7 +37,22 @@ The Intel 8086 microprocessor was first introduced in 1978. Since then the semic
 \tableofcontents
 
 \section{Introduction}
-It was in the mid 1970s when Intel announced their latest project, the Intel 8086 -  a 16-bit microprocessor capable of supporting up to a revolutionary 1 mega{\em byte} of address space and 64 kilo{\em bytes} of input/output. Gone were the days of simple computing in only 8-bits of freedom, this was the 70's and 16-bits were here to take over. Along with the increases in accessible memory and larger size ALU computations, Intel introduced a new type of architecture and instruction set known as x86, this new method of computing revolved around the use of registers that stored input and output data which could then have computations performed on them. This improvement has since paved the way for future computing by setting a standard on how the processor receives data and how the data can then be processed in a regular clock cycle. The 8086 supported 80 assembly instructions which also included instructions compatible with the older 8-bit processors so the older programs would still be backwards compatible with the new technology, this capability alone was one of the major reasons that large companies began transitioning to the new architecture which began a substantial drive to future 16-bit iterations of the processor.
+It was in the mid 1970s when Intel announced their latest project, the Intel 8086 -  a 16-bit microprocessor capable of supporting up to a revolutionary 1 mega{\em byte} of address space and 64 kilo{\em bytes} of input/output. Gone were the days of simple computing in only 8-bits of freedom, this was the 70's and 16-bits were here to take over. Along with the increases in accessible memory and larger size ALU computations, Intel introduced a new type of architecture and instruction set known as x86, this new method of computing revolved around the use of registers that stored input and output data which could then have computations performed on them. This improvement has since paved the way for future computing by setting a standard on how the processor receives data and how the data can then be processed in a regular clock cycle. The 8086 supported 80 assembly instructions which also included instructions compatible with the older 8-bit processors so the older programs would still be backwards compatible with the new technology, this capability alone was one of the major reasons that large companies began transitioning to the new architecture which began a substantial drive to future 16-bit iterations of the processor. See Figure ~\ref{fig:intel8086} for Intel 8086 hardware.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[H]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{figures/intel8086}
+		\caption{Intel 40 pin 8086 microprocessor}
+	\end{subfigure}
+	\begin{subfigure}[H]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{figures/8086die}
+		\caption{Silicon die inside the 8086 package}
+	\end{subfigure}
+	\caption{Popular hardware from the 1970's
+	}
+	\label{fig:intel8086}
+\end{figure}
 
 The field-programmable gate array (FPGA) has been around since the 1980's, its purpose was to be able to easily create and prototype custom hardware without having to expend vast resources required for designing and manufacturing application-specific integrated circuits (ASICs). The FPGA accomplishes this by using "logic elements" (LE), a term that varies by manufacturer but is essentially the same, which is typically a circuit that consists of a lookup table for performing an array of logic operations,  multiplexers and low level logic gates that can be configured in such a way as to create custom complex logic such as adders/subtractors or even be used for more simple XOR and NAND gates. A common structure of a logic element can be found in Figure \ref{fig:LogicElement}, this one is from the Altera Cyclone III family. The elements  are most often configured as a matrix with interconnects for inputs, outputs and configuration paths in between. In the last decade or so, improvements in silicon technologies have allowed FPGA manufacturers to greatly increase the number of logic elements on a chip into the hundreds of thousands and beyond which makes it possible to design hardware of almost the same complexity as modern ASICs.
 
@@ -50,18 +65,39 @@ The field-programmable gate array (FPGA) has been around since the 1980's, its p
 
 After discovering an independent open source initiative, Zet Processor - a clone of the Intel 8086 hardware description by Zeus Gómez Marmolejo, it was determined that this project would make it possible so that the Intel 8086 microprocessor could be implemented onto a modern FPGA \cite{ZetProcessor}. The project as a whole would encourage study in all areas of focus for a person with primary interests in Computer Architecture, Digital Systems Design, FPGAs, and Assembly programming. This project and study  is something that can also be completed within the time frame of a typical academic semester.
 
+\newpage
+
 \section{Implementation Requirements}
 Through extensive research of various FPGA manufacturers and the different styles of development boards offered from a select number of companies, it was determined that an FPGA that is able to hold more than 9,000 LEs would be required to successfully implement the Intel 8086 microprocessor. As an added necessity, it was important to select a development board that would be able to handle the project inputs and outputs such as PS2 keyboard and VGA output in order to spend more time on the study and not building miscellaneous external hardware. From this research, it was determined that the Altera DE0 development board sufficiently met the project needs with over 15,000 LE's, a VGA port, a PS2 port, buttons, LEDs, switches, and USB interface. Another important addition to the board is its Secure Digital (SD) memory card slot which would allow for external flash memory storage of an operating system, full specifications for the Altera DE0 board can be found in Appendix \ref{App:AppendixA}.
 
 Other components for the project include; an LCD monitor to visualize the system status, a PS2 keyboard to interact with the operating system, a computer with Linux to compile the processor and write the operating system to the memory card.
 
-Since the study is sponsored by the Altera University Program, an Altera DE0 development board has been provided as well as an Altera DE0-Nano development boards at no cost. This makes the projects overall required budget \$0 since the devices come with the necessary software to program the FPGA and all of the other software packages used are open source.
+Since the study is sponsored by the Altera University Program, an Altera DE0 development board has been provided as well as an Altera DE0-Nano development boards at no cost. This makes the projects overall required budget \$0 since the devices come with the necessary software to program the FPGA and all of the other software packages used are open source. See Figure ~\ref{fig:DE0} for FPGA device.
 
-\section{Procedure}
-The Zet Processor is more than just Verilog code for an Intel 8086 microprocessor, it also contains the necessary BIOS and drivers for treating the SD memory card as a mounted hard disc. The preliminary steps for installing the processor first include compiling the BIOS by running it through the Open Watcom compiler which takes the BIOS code written in C and compiles it into x86 Assembly optimized for 16-bit instructions \cite{Watcom}. We then take the BIOS assembly and convert it into hexadecimal by means of a simple file conversion script, this is now our ROM for placing onto the FPGA. The BIOS then gets placed onto the FPGA through running the DE0\_Control\_Panel, an example program that comes with the FPGA software, which allows for files to be placed directly onto the on-board flash memory. This is important because as the processor boots, it will automatically look at address 0x00000 for instructions on where to next proceed such as how to mount the operating system and ultimately boot it. 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=3.5in]{figures/DE0}
+	\caption{Altera DE0 FPGA Development Board}
+	\label{fig:DE0}
+\end{figure}
 
+\newpage
+
+\section{Methods}
+\subsection{BIOS Compilation}
+The Zet Processor is more than just Verilog code for an Intel 8086 microprocessor, it also contains the necessary BIOS and drivers for treating the SD memory card as a mounted hard disc. The preliminary steps for installing the processor first include compiling the BIOS by running it through the Open Watcom compiler which takes the BIOS code written in C and compiles it into x86 Assembly optimized for 16-bit instructions \cite{Watcom}. We then take the BIOS assembly and convert it into hexadecimal by means of a simple file conversion script, this is now our ROM for placing onto the FPGA. The BIOS then gets placed onto the FPGA through running the DE0\_Control\_Panel (see Figure ~\ref{fig:control}), an example program that comes with the FPGA software, which allows for files to be placed directly onto the on-board flash memory. This is important because as the processor boots, it will automatically look at address 0x00000 for instructions on where to next proceed such as how to mount the operating system and ultimately boot it. 
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=3.5in]{figures/de0controlpanel}
+	\caption{DE0 Control Panel}
+	\label{fig:control}
+\end{figure}
+
+\subsection{Loading the Operating System}
 Since the processor runs 16-bit x86 it is necessary to choose a compatible operating system. This leaves a few options including MS-DOS 6.22, FreeDOS 1.1, and Microsoft Windows 3.0. MS-DOS was chosen due to its small file size and easy to work with command line interface, as an added bonus the copyright for MS-DOS has expired which makes it very easy and convenient to find the source code in various places on the Internet. To load the operating system, it was necessary to load the files exactly as described from the downloaded image. The process was accomplished by running {\tt dd if=./msdos.img of=/dev/sdc} on a Linux computer, this instruction mounts the MS-DOS image byte-by-byte onto the SD memory card which is necessary for when the BIOS looks at a specific memory location to start the operating system.
 
+\subsection{Placing Hardware on the FPGA}
 In order to begin the process of loading the Zet Processor hardware onto the FPGA, it is first important to read the documentation and manuals for the Altera DE0 Development Board and accompanying Quartus II software manual. 
 
 The process for loading Verilog onto the device is fairly straightforward, that is to compile the Verilog code and debug any miscellaneous warnings and compilation errors and then to utilize the on-board programmer to load the code onto the device. When loading the code it is important to take note of the different ways in which the code can be loaded. If the code is loaded through the Joint Tag Action Group (JTAG) interface, it is important to note that this only temporarily loads the hardware and all progress will be lost after powering down the device. This feature is due to the fact that JTAG is made for testing and only loads values directly into the flip-flops and accompanying hardware but does not save this setup data to the flash memory. Since this method only sets the hardware, it can load the hardware almost instantaneously. The other method for loading hardware is known as Active Serial programming (AS), this method requires that the FPGA device is placed into programming mode which can be done by flipping a switch placed on the development board. AS places the FPGA configuration data into FLASH memory which is read into the device at power up.
@@ -73,8 +109,10 @@ The process for loading Verilog onto the device is fairly straightforward, that 
 	\label{fig:CompileResults}
 \end{figure}
 
+\newpage
+
 \section{Results}
-After performing the necessary steps as described by the procedure, the processor is now fully functional and can run an operating system as shown in Figure \ref{fig:WorkingFPGA}. This was the primary objective for the project and is considered to define the project as an overall success. The next steps were to design presentation materials for demonstration, since MS-DOS includes a program called QBASIC which is a BASIC language interpreter based off of Microsoft's more popular software QuickBASIC, some demonstration programs were written to show off some of the processors capabilities such as the Hello World program and a small game for guessing a random number. The operating system also included some games which could be played through keyboard input such as Rogue, which is described as a crawling dungeon game with ASCII text based graphics that are easily displayed in terminal where the player has to fight off goblins only disguised as the letter "G" and collect coins throughout the map \cite{Rogue}. 
+After performing the necessary steps as described by the procedure, the processor is now fully functional and can run an operating system as shown in Figure \ref{fig:WorkingFPGA}. This was the primary objective for the project and is considered to define the project as an overall success. The next steps were to design presentation materials for demonstration, since MS-DOS includes a program called QBASIC (Figure ~\ref{fig:qbasic}) which is a BASIC language interpreter based off of Microsoft's more popular software QuickBASIC, some demonstration programs were written to show off some of the processors capabilities such as the Hello World program and a small game for guessing a random number. The operating system also included some games which could be played through keyboard input such as Rogue, which is described as a crawling dungeon game with ASCII text based graphics that are easily displayed in terminal where the player has to fight off goblins only disguised as the letter "G" and collect coins throughout the map \cite{Rogue}. 
 
 \begin{figure}[!h]
 	\centering
@@ -83,6 +121,14 @@ After performing the necessary steps as described by the procedure, the processo
 	\label{fig:WorkingFPGA}
 \end{figure}
 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=3.5in]{figures/qbasic}
+	\caption{QBasic running on MS-DOS}
+	\label{fig:qbasic}
+\end{figure}
+
+\newpage
 \section{Problems Faced \& Troubleshooting}
 The number one challenge in completing this study was a lack of full documentation and user base for the Zet Processor. It became evident very early on in research that this project would require extensive digging through the source code and custom modifications to get it to work with the Cyclone III device. The last update for the project was over a year ago and the online support forums provided little resource with many of the problems faced when trying to implement the processor. It was also difficult to determine which version of the processor was relevant to the documentation so it was assumed that most of what was found was obsolete or not correct.
 
@@ -100,6 +146,8 @@ One of the primary objectives for this study was to gain comprehensive knowledge
 The author would like to thank the Altera University Program \cite{UniProgram} for providing development boards and necessary software for work on this area of study.
 
 \section{Appendix}
+
+\onehalfspacing
 
 \label{App:AppendixA}
 \subsection{Full specifications for Altera DE0 development board:}
